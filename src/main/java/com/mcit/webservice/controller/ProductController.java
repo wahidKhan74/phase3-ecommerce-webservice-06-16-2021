@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mcit.webservice.entity.Product;
+import com.mcit.webservice.exception.InvalidDataException;
+import com.mcit.webservice.exception.ResouceNotFoundException;
 
 @RestController
 @RequestMapping("/api")
@@ -23,17 +25,28 @@ public class ProductController {
 	// Get all list of products
 	@GetMapping("/products")
 	public List<Product> getProducts() {
+		if(products.isEmpty()) {
+			throw new ResouceNotFoundException("Products are not available !");
+		}
 		return products;
 	}
 
 	// get products by id
 	@GetMapping("/products/{id}")
 	public Product getOneProduct(@PathVariable long id) {
+		if(id==0) {
+			throw new InvalidDataException("Product Id canot be zero");
+		}
 		Product product =null;
+		int count =0;
 		for (int i = 0; i < products.size(); i++) {
 			if(products.get(i).getId()==id) {
 				product = products.get(i);
+				count++;
 			}
+		}
+		if(count==0) {
+				throw new ResouceNotFoundException("Product is not available with id "+id);
 		}
 		return product;
 	}
