@@ -1,9 +1,25 @@
 package com.mcit.webservice.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="eusers")
 public class User {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="user_id")
 	private int id;
+	
+	@Column(name="user_name")
 	private String name;
+	
+	@Column(name="user_email")
 	private String email;
 	
 	public User() {
