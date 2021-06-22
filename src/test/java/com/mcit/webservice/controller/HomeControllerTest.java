@@ -1,4 +1,4 @@
-package com.mcit.webservice;
+package com.mcit.webservice.controller;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,13 +10,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
-import com.mcit.webservice.controller.ProductController;
-
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
-class Phase3EcommerceWebservice06162021ApplicationTests {
-
-	@Autowired
-	private ProductController productCtrl;
+public class HomeControllerTest {
 	
 	@LocalServerPort
 	private int port;
@@ -24,22 +19,19 @@ class Phase3EcommerceWebservice06162021ApplicationTests {
 	@Autowired
 	TestRestTemplate testTemplate;
 	
-	
 	@Test
-	@DisplayName("Test : Load Application context")
-	void contextLoads() {
-		Assertions.assertNotNull(productCtrl);
+	@DisplayName("Test : test users")
+	void testForUsers() {
+		String url = "http://localhost:"+port+"/users";
+		ResponseEntity<String> response = testTemplate.getForEntity(url, String.class);		
+		Assertions.assertEquals("Welcome users !", response.getBody());
 	}
 	
 	@Test
-	@DisplayName("Test : server runing test")
-	void testForServerRun() {
-		String url = "http://localhost:"+port+"/";
-		ResponseEntity<String> response = testTemplate.getForEntity(url, String.class);
-		
-		Assertions.assertEquals("Server is up and running !", response.getBody());
+	@DisplayName("Test : test admin")
+	void testForAdmin() {
+		String url = "http://localhost:"+port+"/admin";
+		ResponseEntity<String> response = testTemplate.getForEntity(url, String.class);		
+		Assertions.assertEquals("Welcome admin !", response.getBody());
 	}
-	
-	
-
 }
